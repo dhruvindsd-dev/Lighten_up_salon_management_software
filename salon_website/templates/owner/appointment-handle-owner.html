@@ -1,0 +1,177 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section">
+  <p class="title">
+    Pending Appointments :
+  </p>
+  <div class="columns">
+    <div class="column is-half">
+      {% for appointment in pending_appointments %}
+      <div
+        class="notification"
+        style="
+          padding: 10px 0px 10px 10px;
+          background-color: rgb(255, 180, 226);
+          border: 2px solid rgba(255, 70, 172, 0.616);
+        "
+      >
+        <div class="columns is-mobile is-vcentered">
+          <div class="column is-9">
+            <span class="is-size-5 has-text-weight-bold" id="cli_name"
+              >{{appointment.0.cli.name}}</span
+            >
+            on
+            <span class="is-size-6 less-opacity"
+              ><span id="cli_date">{{appointment.0.date}}</span> at
+              <span id="cli_time">{{appointment.0.time}}</span></span
+            >
+            <p class="is-size-5 has-text-weight-bold">Services:</p>
+            <ul>
+              {% for item in appointment.1 %}
+              <li class="less-opacity">- {{item}}</li>
+              {% endfor %}
+            </ul>
+            <br />
+            <a
+              href="tel:{{appointment.0.cli.number}}"
+              class="button is-link is-light is-outlined"
+              id="cli_number"
+              >Call</a
+            >
+          </div>
+          <div class="column is-3">
+            <span
+              class="icon is-large check-icon-hover"
+              onclick="confirm_appointment_prompt(this)"
+            >
+              <i class="fas fa-check is-size-4"></i
+            ></span>
+            <span
+              class="icon is-large cross-icon-hover"
+              onclick="decline_appointment_prompt(this)"
+            >
+              <i class="fas fa-times is-size-4"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="section">
+  <p class="title">
+    Confirmed Appointments
+  </p>
+  <div class="columns">
+    <div class="column is-half">
+      <ul>
+        <li>
+          <div
+            class="level is-mobile is-primary"
+            style="
+              padding: 10px;
+              background-color: rgb(122, 255, 139);
+              border-radius: 5px;
+            "
+          >
+            <div class="level-left">
+              <div class="level-item">
+                <div>
+                  <p class="is-size-5 has-text-weight-bold">Name Date</p>
+                  <p class="is-size-6">Services</p>
+                </div>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div>
+                  <span class="icon"
+                    ><i class="fas fa-times is-size-4"> </i
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="modal confirmation_modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="notification is-light">
+      <div class="text"></div>
+      <br />
+      <a class="button is-link is-light is-outlined btn_text">
+        Confirm Appointment
+      </a>
+      <a
+        class="button is-danger is-light is-outlined"
+        onclick="document.querySelector('.confirmation_modal').classList.remove('is-active')"
+        ><span class="icon"> <i class="fas fa-chevron-left"></i></span
+        ><span> Go back</span></a
+      >
+    </div>
+    <!-- Any other Bulma elements you want -->
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+<script>
+  const decline_appointment_prompt = (el) => {
+    const column = el.parentElement.parentElement;
+    const number = document.querySelector("#cli_number").href.split(":")[1];
+    const name = document.querySelector("#cli_name").innerText;
+    const time = document.querySelector("#cli_time").innerText;
+    const date = column.querySelector("#cli_date").innerText;
+    const modal = document.querySelector(".confirmation_modal");
+    modal.querySelector(".notification").style.backgroundColor =
+      "rgb(250, 201, 193);";
+
+    modal.classList.add("is-active");
+    modal.querySelector(
+      ".text"
+    ).innerHTML = `<p class="is-size-5"> Are you sure you want to DECLINE  Appointment of ${name} on ${date} at ${time} `;
+
+    document.querySelector(".btn_text").innerText = "Decline Appointment";
+    document
+      .querySelector(".btn_text")
+      .addEventListener("click", () =>
+        confirm_appointment(name, number, false)
+      );
+  };
+  const confirm_appointment_prompt = (el) => {
+    const column = el.parentElement.parentElement;
+    const number = document.querySelector("#cli_number").href.split(":")[1];
+    const name = document.querySelector("#cli_name").innerText;
+    const time = document.querySelector("#cli_time").innerText;
+    const date = column.querySelector("#cli_date").innerText;
+    const modal = document.querySelector(".confirmation_modal");
+    modal.classList.add("is-active");
+    modal.querySelector(
+      ".text"
+    ).innerHTML = `<p class="is-size-5"> Confirm Appointment of ${name} on ${date} at ${time} `;
+
+    document.querySelector(".btn_text").innerText = "Confirm Appointment";
+    document
+      .querySelector(".btn_text")
+      .addEventListener("click", () => confirm_appointment(name, number, true));
+  };
+  const confirm_appointment = (name, number, confirm) => {
+    console.log(name, number);
+    if (confirm === true) {
+      fetch(`booking/${name}/${number}/confirm`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    } else if (confirm === false) {
+      fetch(`booking/${name}/${number}/decline`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }
+  };
+</script>
+{% endblock %}

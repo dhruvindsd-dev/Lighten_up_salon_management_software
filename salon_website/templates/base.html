@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lighten Up Salon | Lighten Up Yourself</title>
+    {% load pwa %}
+    <head>
+      {% progressive_web_app_meta %}
+    </head>
+    <!-- manifest.json -->
+    {% load static %}
+    <!-- <link rel="stylesheet" href="{% static 'css/bulma.min.css'%}" /> -->
+    <link href="static/icons/css/all.css" rel="stylesheet" />
+    <!--load all styles -->
+
+    <link
+      rel="stylesheet"
+      href="static/css/bulma.min.css?v={random number/string}"
+    />
+
+    <style>
+      img {
+        object-fit: cover;
+      }
+      hr {
+        background-color: #6e6e6e86;
+      }
+      td {
+        padding: 15px !important;
+      }
+      .services,
+      label {
+        margin-top: 15px;
+      }
+      .title-border {
+        border-bottom: 2px solid rgba(117, 117, 117, 0.322);
+        padding-bottom: 5px;
+      }
+      .date_btn {
+        display: inline-table;
+      }
+      .is-link:hover {
+        border-color: #3273dc !important;
+      }
+      .less-opacity {
+        opacity: 0.7;
+      }
+      .check-icon-hover {
+        transition: 0.2s ease;
+      }
+      .check-icon-hover:hover {
+        color: rgba(255, 0, 179, 0.897);
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+      .cross-icon-hover {
+        transition: 0.2s ease;
+      }
+      .cross-icon-hover:hover {
+        color: rgba(255, 30, 0, 0.699);
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="has-background-light">
+    {% block content %} {% endblock %}
+  </body>
+</html>

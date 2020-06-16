@@ -1,0 +1,206 @@
+{% extends 'base.html' %} {% block content %} {% load static%}
+<div
+  class="hero is-fullheight"
+  style="
+    background-image: url('static/img/home/home_hero_large.jpg');
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
+    min-height: 80vh;
+  "
+>
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item">Salon Name</a>
+          <a
+            role="button"
+            class="navbar-burger"
+            data-target="navMenu"
+            aria-label="menu"
+            aria-expanded="false"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu" id="navMenu">
+          <div class="navbar-end">
+            <a href="our_work" class="navbar-item"> Our Work</a>
+            <a href="our_services" class="navbar-item"> Our Services</a>
+            <a href="book_appointment" class="navbar-item"> Book Appointment</a>
+            <a href="gold_cus_login" class="navbar-item">Gold Customer</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="hero-body">
+    <div>
+      <p class="title">Salon Name</p>
+      <a class="button is-medium">Call us</a>
+    </div>
+  </div>
+</div>
+<div class="section" style="padding-bottom: 0;">
+  <p class="content is-size-5">
+    <span class="has-text-weight-bold is-size-4">Your hair</span> is a
+    reflection of your personality and we know how to bring out the real you.
+    Let us professionally cut and style your hair to complement your facial
+    features, then add a personal touch. Want reliable advice on maintaining
+    healthy hair? Make an appointment with a us to discuss the right treatments
+    and products for your individual type. We can help you manage your style and
+    keep it looking its best.
+  </p>
+</div>
+<div class="section">
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-7">
+      <div class="tile is-child">
+        <figure class="image is-16by9">
+          <img src="static/img/home/who.jpg" alt="" />
+        </figure>
+      </div>
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child section has-text-centered">
+        <p class="title">Who Are We ?</p>
+        <p class="content is-size-5">
+          At Our salon , we pride ourselves in customer satisfaction. We ensure
+          that our stylists maintain our team mantra because we know the
+          importance of your hair to your overall look.
+        </p>
+        <p id="notified" style="display: none;">
+          You're Recieving Notifications
+        </p>
+        <br />
+        <a class="button is-link is-light is-outlined install_pwa"
+          >Install Our App</a
+        >
+        <br />
+        <br />
+        <a
+          class="button is-link is-light"
+          onclick="clould_messaging()"
+          id="get_notified"
+        >
+          Get Notified About Latest Packages.
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <p class="title container has-text-centered">Featured Services</p>
+  <div class="tile is-ancestor is-vertical">
+    <div class="tile is-parent">
+      <div class="tile is-child">
+        <figure class="image is-5by4 has-background-primary">
+          <img
+            src="static/img/home/hair_service.jpg"
+            style="border-radius: 7px;"
+          />
+        </figure>
+      </div>
+      <div class="tile is-child section">
+        <div class="has-text-centered">
+          <p class="title">Hair /-</p>
+        </div>
+        <br />
+        <table class="table is-fullwidth has-background-light">
+          <tbody>
+            <tr>
+              <td><p class="is-size-4">Hair Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Hair Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Hair Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Hair Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Hair Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child section">
+        <div class="container has-text-centered">
+          <p class="title">Spa /-</p>
+        </div>
+        <br />
+        <table class="table is-fullwidth has-background-light">
+          <tbody>
+            <tr>
+              <td><p class="is-size-4">Spa Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Spa Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Spa Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Spa Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+            <tr>
+              <td><p class="is-size-4">Spa Service</p></td>
+              <td><p class="is-size-4">Price</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tile is-child section">
+        <figure class="image is-5by4 has-background-primary">
+          <img
+            src="static/img/home/spa_service.jpg"
+            style="border-radius: 7px;"
+          />
+        </figure>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(
+      document.querySelectorAll(".navbar-burger"),
+      0
+    );
+
+    // Check if there are any navbar burgers
+    if ($navbarBurgers.length > 0) {
+      // Add a click event on each of them
+      $navbarBurgers.forEach((el) => {
+        el.addEventListener("click", () => {
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle("is-active");
+          $target.classList.toggle("is-active");
+        });
+      });
+    }
+  });
+</script>
+{% include 'scripts.html'%} {% endblock %}
