@@ -15,7 +15,7 @@
           <form
             method="post"
             class="login_form"
-            onsubmit="event.preventDefault(); clould_messaging(form_submit_callback)"
+            onsubmit="event.preventDefault(); clould_messaging(form_submit_callback); "
           >
             {% csrf_token %}
             <div class="field">
@@ -123,15 +123,13 @@
       document.querySelector(".token_input").value = currentToken;
       localStorage.admin_token = currentToken;
       callback();
-      console.log("[currentToken]", currentToken);
     });
     messaging.onTokenRefresh(() => {
-      messaging.getToken().then((refreshedToken) => {});
-      document.querySelector(".token_input").value = refreshedToken;
-      console.log("[Refreshed Token]", refreshedToken);
-
-      localStorage.admin_token = refreshedToken;
-      callback();
+      messaging.getToken().then((refreshedToken) => {
+        document.querySelector(".token_input").value = refreshedToken;
+        localStorage.admin_token = refreshedToken;
+        callback();
+      });
     });
   };
   //  registering a custom service worker for the admins and the content heads
@@ -145,13 +143,13 @@
   }
   const clould_messaging = (callback) => {
     const notification_status = Notification.permission;
-    if (notification_status === "granted") {
+    if (notification_status == "granted") {
       get_firebase_token(callback);
     } else if (Notification.permission == "denied") {
       document.querySelector(".notification_err").style.display = "block";
       document.querySelector(".notification_err").innerHTML =
-        "<p class='has-text-danger'> Notifications Blocked please enable permission to send notifications to get appointment alerts when client books a appointment. </p>";
-    } else if (notification_status === "default") {
+        "<p class='has-text-danger'> Notifications Blocked please enable permission to send notifications to get appointment alerts when client books a appointment. <a href='blocked_notifications'> Click here to know how to enable blokced notifications </a> </p>";
+    } else if (notification_status == "default") {
       // ask for notification permission
       alert("Allow notifications to confirm clients appointments booking.");
       Notification.requestPermission().then((permission) => {

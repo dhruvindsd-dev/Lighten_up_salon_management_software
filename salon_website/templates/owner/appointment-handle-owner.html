@@ -24,6 +24,7 @@
               ><span id="cli_date">{{appointment.0.date}}</span> at
               <span id="cli_time">{{appointment.0.time}}</span></span
             >
+            <span id="id" style="display: none;">{{appointment.0.id}}</span>
             <p class="is-size-5 has-text-weight-bold">Services:</p>
             <ul>
               {% for item in appointment.1 %}
@@ -33,7 +34,7 @@
             <br />
             <a
               href="tel:{{appointment.0.cli.number}}"
-              class="button is-link is-light is-outlined"
+              class="button is-link is-outlined"
               id="cli_number"
               >Call</a
             >
@@ -120,10 +121,11 @@
 <script>
   const decline_appointment_prompt = (el) => {
     const column = el.parentElement.parentElement;
-    const number = document.querySelector("#cli_number").href.split(":")[1];
-    const name = document.querySelector("#cli_name").innerText;
-    const time = document.querySelector("#cli_time").innerText;
+    const number = column.querySelector("#cli_number").href.split(":")[1];
+    const name = column.querySelector("#cli_name").innerText;
+    const time = column.querySelector("#cli_time").innerText;
     const date = column.querySelector("#cli_date").innerText;
+    const id = column.querySelector("#id").innerText;
     const modal = document.querySelector(".confirmation_modal");
     modal.querySelector(".notification").style.backgroundColor =
       "rgb(250, 201, 193);";
@@ -132,41 +134,39 @@
     modal.querySelector(
       ".text"
     ).innerHTML = `<p class="is-size-5"> Are you sure you want to DECLINE  Appointment of ${name} on ${date} at ${time} `;
-
+    const decline = () => {
+      confirm_appointment(id, false);
+    };
     document.querySelector(".btn_text").innerText = "Decline Appointment";
-    document
-      .querySelector(".btn_text")
-      .addEventListener("click", () =>
-        confirm_appointment(name, number, false)
-      );
+    document.querySelector(".btn_text").onclick = decline;
   };
   const confirm_appointment_prompt = (el) => {
     const column = el.parentElement.parentElement;
-    const number = document.querySelector("#cli_number").href.split(":")[1];
-    const name = document.querySelector("#cli_name").innerText;
-    const time = document.querySelector("#cli_time").innerText;
+    const number = column.querySelector("#cli_number").href.split(":")[1];
+    const name = column.querySelector("#cli_name").innerText;
+    const time = column.querySelector("#cli_time").innerText;
     const date = column.querySelector("#cli_date").innerText;
+    const id = column.querySelector("#id").innerText;
     const modal = document.querySelector(".confirmation_modal");
     modal.classList.add("is-active");
     modal.querySelector(
       ".text"
-    ).innerHTML = `<p class="is-size-5"> Confirm Appointment of ${name} on ${date} at ${time} `;
+    ).innerHTML = `<p class="is-size-5"> Confirm Appointment of ${name} on ${date} at ${time}`;
 
     document.querySelector(".btn_text").innerText = "Confirm Appointment";
-    document
-      .querySelector(".btn_text")
-      .addEventListener("click", () => confirm_appointment(name, number, true));
+    document.querySelector(".btn_text").onclick = () => {
+      confirm_appointment(id, true);
+    };
   };
-  const confirm_appointment = (name, number, confirm) => {
-    console.log(name, number);
+  const confirm_appointment = (id, confirm) => {
     if (confirm === true) {
-      fetch(`booking/${name}/${number}/confirm`)
+      fetch(`booking/${id}/confirm`)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
         });
     } else if (confirm === false) {
-      fetch(`booking/${name}/${number}/decline`)
+      fetch(`booking/${id}/decline`)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);

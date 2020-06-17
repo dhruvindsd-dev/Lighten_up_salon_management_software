@@ -35,8 +35,8 @@ urlpatterns = [
     path('staff-login', account_verification),
     path('staff-logged-in', account_verification),
     path('owner-appointment', appointment_handle),
-    path('booking/<str:name>/<int:number>/confirm', appointment_confirm),
-    path('booking/<str:name>/<int:number>/decline', appointment_decline),
+    path('booking/<int:id>/confirm', appointment_confirm),
+    path('booking/<int:id>/decline', appointment_decline),
 
 
 ]

@@ -13,29 +13,35 @@ def appointment_index(request):
         cli_services = request.POST['cli_services']
         cli_time = request.POST['cli_time']
         cli_token = request.POST['cli_token']
-        print('[CLI_TOKEN]', cli_token)
         temp = cli_time.split('-')
         time = temp[0]
-        print(time)
         date = temp[1].split(' ')[1]
+
+        print('[APTMT_NAME]', cli_name)
+        print('[APTMT_NUMBER]', cli_number)
+        print('[APTMT_SERVICES]', cli_services)
+        print('[APTMT_TOKEN]', cli_token)
+        print('[APTMP_TIME]', time)
+        print('[APTMP_DATE]', date)
         if len(Client.objects.filter(number=cli_number)) == 0:
             # create cli
-            Client.objects.create(name=cli_name, number=cli_number)
-            cli = Client.objects.get(number=cli_number)
+            cli = Client.objects.create(name=cli_name, number=cli_number)
             regi_token = Regi_key.objects.filter(token=cli_token)
             if len(regi_token) == 0:
                 Regi_key.objects.create(token=cli_token, cli=cli)
             else:
-                regi_token[0].cli = cli
-                regi_token[0].save()
+                for token in regi_token:                    
+                    token.cli = cli
+                    token.save()
         else:
             cli = Client.objects.get(number=cli_number)
             regi_token = Regi_key.objects.filter(token=cli_token)
             if len(regi_token) == 0:
                 Regi_key.objects.create(token=cli_token, cli=cli)
             else:
-                regi_token[0].cli = cli
-                regi_token[0].save()
+                for token in regi_token:                    
+                    token.cli = cli
+                    token.save()
 
         Appointment.objects.create(
             time=f'{time}:00', date=f'2020-06-{date}', confirmation=False, work_to_be_done=cli_services, cli=cli)

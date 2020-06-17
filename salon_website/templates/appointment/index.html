@@ -468,6 +468,7 @@
           <br />
           <div class="field is-grouped">
             <div class="control">
+              <!-- will submit the form when pressed -->
               <button class="button is-link">Book Appointment</button>
             </div>
           </div>
@@ -519,9 +520,10 @@
               messaging.usePublicVapidKey(
                 "BDwwGV-SNWo4O7nHG6raDK__I0ALnPpv2uOeqe_W7qXciMD8fdwdWQaL_jvFXKAXS-T1hZ5CjnQ6sLb78zVo8RU"
               );
+
               messaging.getToken().then((currentToken) => {
-                console.log("[Current Token ]", currentToken);
-                localStorage.main_token_item = currentToken;
+                console.log("[Current Token ]", currentToken); // forDebug
+                localStorage.main_token_item = currentToken; // forDebug
                 document.querySelector("#token_input").value = currentToken;
                 form_submit();
               });
@@ -529,8 +531,8 @@
               messaging.onTokenRefresh(() => {
                 messaging.getToken().then((refreshedToken) => {
                   document.querySelector("#token_input").value = refreshedToken;
+                  form_submit();
                 });
-                form_submit();
               });
             } else if (Notification.permission == "denied") {
               // set servie worker and send the token to the server and take user to the guide to solve the notification thing.
@@ -538,7 +540,7 @@
                 .querySelector(".notification_modal")
                 .classList.add("is-active");
               document.querySelector(".notification_err").innerHTML =
-                '<p class="has-text-danger" > You have blocked notifications you will not be able to recieve any message on the confirmation of your booking and other weeksly packages. </p>  ';
+                '<p class="has-text-danger" > You have blocked notifications you will not be able to recieve any message on the confirmation of your booking and other weekly packages. </p>  ';
               document
                 .querySelector(".notification_err")
                 .addEventListener("click", () => {
@@ -554,8 +556,6 @@
                   form_submit();
                 });
             } else {
-              console.log("inside else");
-
               document
                 .querySelector(".notification_modal")
                 .classList.add("is-active");
@@ -634,12 +634,6 @@
                 "<p class='has-text-danger'> Please Select Date And Time </p> ";
               return false;
             }
-            // if (Notification.permission == "default") {
-            //   document
-            //     .querySelector(".notification_modal")
-            //     .classList.add("is-active");
-            //   return false;
-            // }
             get_notified();
           };
           const form_submit = () => {
