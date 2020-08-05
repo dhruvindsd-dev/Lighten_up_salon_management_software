@@ -1,66 +1,83 @@
 {% extends 'base.html' %} {% block content %}
-<div
-  class="hero is-fullheight is-dark"
-  style="
-    background-image: url('static/img/admin/loged-in.jpg');
-    background-size: cover;
-    background-position: center;
-    min-height: 60vh;
-    background-attachment: fixed;
-  "
->
-  <div class="hero-body container">
-    <div class="is-size-3 has-text-weight-bold has-text-centered">
-      Welcome Back {{name}}.
+
+<div class="section">
+  <div class="title has-text-centered">
+    Welcome Back <span class="alegreya">{{name}}</span>.
+  </div>
+</div>
+<div class="section">
+  <div class="tile is-ancestor">
+    <div class="tile is-parent">
+      <div class="tile is-child">
+        <p class="is-size-4 has-text-centered">
+          <span class="icon is-medium is-size-5"><i class="fas fa-clock"></i></span> <span>Quick actions</span>
+        </p> <br>
+        <div class="buttons is-centered">
+          <a href="/sale_add" class="button magenta_btn"><span class="icon"><i class="fas fa-plus"></i></span><span>Add
+              Sale</span></a>
+          <a class="button magenta_btn"><span class="icon"><i class="fas fa-plus"></i></span> <span>Create New
+              Blog</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="tile is-parent is-vertical">
+      <div class="tile is-child">
+        <p class="is-size-4  has-text-centered">
+          <span class="icon is-medium is-size-5"><i class="fas fa-bell"></i></span> <span>
+            Upcomming Events
+          </span>
+        </p>
+      </div>
+      {% for cli in upcomming_events %}
+      <div class="tile is-child ">
+        <a href="/salon_clients_view/{{cli.cli.id}}" class="columns is-mobile">
+          <div style="padding: 0px;" class="column ">{{cli.cli.name}}</div>
+          <div style="padding: 0px;" class="column  has-text-centered">{{cli.event}}</div>
+          <div style="padding: 0px;" class="column  has-text-right">{{cli.days_to_go}} days to go</div>
+        </a>
+      </div>
+
+      {% endfor %}
     </div>
   </div>
 </div>
 <div class="section">
   <div class="tile has-ancestor">
     <div class="tile is-parent">
-      <div
-        class="tile is-child notification has-text-light"
-        style="background-color: #7644c3;"
-        onclick="window.location.href = '/owner-appointment' ; "
-      >
+      <div class="tile is-child hover_scale notification has-text-light" style="background-color: #7644c3;"
+        onclick="window.location.href = '/owner-appointment' ; ">
         <p class="is-size-4 has-text-weight-bold">Appointments</p>
         <p class="less-opacity">View and confirm appointments</p>
       </div>
     </div>
     <div class="tile is-parent">
-      <div
-        class="tile is-child notification has-text-light"
-        style="background-color: #683bab;"
-      >
+      <div class="tile is-child hover_scale notification has-text-light" style="background-color: #683bab;"
+        onclick="window.location.href='/sales'">
         <p class="is-size-4 has-text-weight-bold">
-          Send Notification To Clients.
+          Sales
         </p>
         <p class="less-opacity">
-          Send notificaions to clients regarding a new service or package.
+          Manage your daily sales.
         </p>
       </div>
     </div>
     <div class="tile is-parent">
-      <div
-        class="tile is-child notification notification has-text-light"
-        style="background-color: #593392;"
-      >
-        <p class="is-size-4 has-text-weight-bold">Customer Loyality Program</p>
+      <div class="tile is-child hover_scale notification notification has-text-light" style="background-color: #593392;"
+        onclick="window.location.href = '/salon_clients'">
+        <p class="is-size-4 has-text-weight-bold">Manage Clients. </p>
         <p class="less-opacity">
-          View your clients currently in the customer loality program.
+          View and manage all your clients data.
         </p>
       </div>
     </div>
     <div class="tile is-parent">
-      <div
-        class="tile is-child notification notification has-text-light"
-        style="background-color: #4a2b7a;"
-      >
+      <div class="tile is-child hover_scale notification notification has-text-light" style="background-color: #4a2b7a;"
+        onclick="window.location.href='/salon_blog'">
         <p class="is-size-4 has-text-weight-bold">Blogs</p>
-        <p class="less-opacity">Create and edit your blogs.</p>
+        <p class="less-opacity">Create and manage your blogs.</p>
       </div>
     </div>
   </div>
-  <script></script>
 </div>
+
 {% endblock %}

@@ -1,64 +1,40 @@
 {% extends 'base.html' %} {% block content %}
 <!-- Staff / owner login  -->
-<div
-  class="hero is-fullheight"
-  style="
+<div class="hero is-fullheight" style="
     background-image: url('static/img/admin/login-bg-1.jpg');
     background-size: cover;
     background-position: right;
-  "
->
+  ">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-5">
-          <form
-            method="post"
-            class="login_form"
-            onsubmit="event.preventDefault(); clould_messaging(form_submit_callback); "
-          >
+          <form method="post" class="login_form"
+            onsubmit="event.preventDefault(); clould_messaging(form_submit_callback); ">
             {% csrf_token %}
             <div class="field">
               <label class="label has-text-light is-size-4">Username</label>
               <div class="control">
-                <input
-                  name="username"
-                  type="text"
-                  class="input username_input"
-                  required
-                  placeholder="enter your username"
-                />
+                <input name="username" type="text" class="input username_input" required
+                  placeholder="enter your username" />
               </div>
             </div>
             <div class="field">
               <label class="label has-text-light is-size-4">Password</label>
               <div class="control">
-                <input
-                  type="password"
-                  name="password"
-                  class="input password_input"
-                  required
-                  placeholder="enter your password"
-                />
+                <input type="password" name="password" class="input password_input" required
+                  placeholder="enter your password" />
               </div>
             </div>
-            <input
-              type="text"
-              class="token_input"
-              style="display: none;"
-              name="token"
-            />
+            <input type="text" class="token_input" style="display: none;" name="token" />
             <div class="control">
               <p class="has-text-danger is-size-4 invalid_details">
                 {{err}}
               </p>
-              <p
-                class="has-text-dange is-size-6 notification_err"
-                style="display: none; margin: 10px;"
-              ></p>
+              <p class="has-text-dange is-size-6 notification_err" style="display: none; margin: 10px;"></p>
             </div>
             <div class="control">
-              <button class="button is-primary is-outlined is-light">
+              <button class="button magenta_btn login_btn">
                 Login
               </button>
             </div>
@@ -78,15 +54,16 @@
       localStorage.admin_username &&
       localStorage.admin_password &&
       localStorage.admin_token &&
-      Notification.permission == "granted"
+      Notification.permission == "granted" &&
+      document.querySelector('.invalid_details').innerText == ''
     ) {
+      document.querySelector(".login_btn").classList.add("is-loading");
       //  get input boxs fill the data and submit the godamn form
       document.querySelector(".username_input").value =
         localStorage.admin_username;
       document.querySelector(".password_input").value =
         localStorage.admin_password;
       clould_messaging(form_submit_callback);
-      // document.querySelector(".login_form").submit();
     }
   });
   const form_submit_callback = () => {
@@ -144,6 +121,11 @@
   const clould_messaging = (callback) => {
     const notification_status = Notification.permission;
     if (notification_status == "granted") {
+      document.querySelector(".login_btn").classList.add("is-loading");
+      document.querySelector(".notification_err").style.display = "block";
+      document.querySelector(
+        ".notification_err"
+      ).innerHTML = `<p class="has-text-link" > Logging you in ${localStorage.admin_username} </p>`;
       get_firebase_token(callback);
     } else if (Notification.permission == "denied") {
       document.querySelector(".notification_err").style.display = "block";

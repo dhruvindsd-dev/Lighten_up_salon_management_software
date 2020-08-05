@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section">
+  <p class="title has-text-centered">
+    <span class="title-border">
+      Sales
+    </span>
+  </p>
+  <p class="has-text-centered">
+    <a href="sale_add" class="button magenta_btn"><span class="icon"><i class="fas fa-plus"></i></span>
+      <span>Add</span></a>
+  </p>
+</div>
+<div class="section" style="padding-top: 0px;">
+  <div class="field">
+    <div class="control has-icons-left">
+      <input type="text" class="input" style="border: 2px solid rgb(68, 68, 68);" onkeyup="sale_seach(this)"
+        placeholder="Seach any date ">
+      <span class="icon is-left"><i class="fas fa-search" style="color: rgb(68, 68, 68);"></i></span>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="padding-top: 0px;">
+  <div class="columns is-centered">
+    <div class="column is-half">
+      {% for sale in sales  reversed %}
+      <div class="notification hover_scale to_search"
+        onclick="window.location.href= `sale_view/{{sale.sale.0.date|date:'Y-m-d' }}`" style="
+          padding: 10px 0px 10px 10px;
+          background-color: rgb(255, 180, 226);
+          border: 2px solid rgba(255, 70, 172, 0.616);
+        ">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <div>
+                <p class="is-size-5 has-text-weight-bold has-text-left">
+                  {{sale.sale.0.date}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="level-right">
+            <div class="level-item">
+              <div>
+                <p class="is-size-4" style="margin-right: 10px;">
+                  <span class="is-size-5 has-text-weight-bold">Total Sales :
+                  </span>
+                  <span class="is-size-5">₹ {{sale.dis_price}}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+  function sale_seach(el) {
+    data = [...document.querySelectorAll('.to_search')]
+
+    for (let i = 0; i < data.length; i++) {
+
+      if (data[i].innerText.toUpperCase().indexOf(el.value.toUpperCase()) > -1) {
+        data[i].style.display = ''
+      } else {
+        data[i].style.display = 'none'
+      }
+
+    }
+  }
+</script>
+{% endblock %}

@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 <div class="section">
-  <p class="title">
-    Pending Appointments :
+  <p class="title has-text-centered">
+    <span class="title-border">Pending Appointments</span>
   </p>
-  <div class="columns">
+  <div class="columns is-centered">
     <div class="column is-half">
-      {% for appointment in pending_appointments %}
+      {% if pending_appointments %} {% for appointment in pending_appointments%}
       <div
         class="notification"
         style="
@@ -55,46 +55,72 @@
           </div>
         </div>
       </div>
-      {% endfor %}
+      {% endfor %} {% else %}
+      <p class="subtitle has-text-centered">
+        No pending appointments
+      </p>
+      {% endif %}
     </div>
   </div>
 </div>
 <div class="section">
-  <p class="title">
-    Confirmed Appointments
+  <p class="title has-text-centered">
+    <span class="title-border">
+      Confirmed Appointments
+    </span>
   </p>
-  <div class="columns">
+  <div class="columns is-centered">
     <div class="column is-half">
-      <ul>
-        <li>
-          <div
-            class="level is-mobile is-primary"
-            style="
-              padding: 10px;
-              background-color: rgb(122, 255, 139);
-              border-radius: 5px;
-            "
-          >
-            <div class="level-left">
-              <div class="level-item">
-                <div>
-                  <p class="is-size-5 has-text-weight-bold">Name Date</p>
-                  <p class="is-size-6">Services</p>
-                </div>
-              </div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <div>
-                  <span class="icon"
-                    ><i class="fas fa-times is-size-4"> </i
-                  ></span>
-                </div>
-              </div>
-            </div>
+      {% if confirmed_appointments %} <br />
+      {%for appointment in confirmed_appointments %}
+      <div
+        class="notification"
+        style="
+          padding: 10px 0px 10px 10px;
+          background-color: #b5ffb7;
+          border: 2px solid rgba(0, 255, 55, 0.616);
+        "
+      >
+        <div class="columns is-mobile is-vcentered">
+          <div class="column is-9">
+            <span class="is-size-5 has-text-weight-bold" id="cli_name"
+              >{{appointment.0.cli.name}}</span
+            >
+            on
+            <span class="is-size-6 less-opacity"
+              ><span id="cli_date">{{appointment.0.date}}</span> at
+              <span id="cli_time">{{appointment.0.time}}</span></span
+            >
+            <span id="id" style="display: none;">{{appointment.0.id}}</span>
+            <p class="is-size-5 has-text-weight-bold">Services:</p>
+            <ul>
+              {% for item in appointment.1 %}
+              <li class="less-opacity">- {{item}}</li>
+              {% endfor %}
+            </ul>
+            <br />
+            <a
+              href="tel:{{appointment.0.cli.number}}"
+              class="button is-link is-outlined"
+              id="cli_number"
+              >Call</a
+            >
           </div>
-        </li>
-      </ul>
+          <div class="column is-3">
+            <span
+              class="icon is-large cross-icon-hover"
+              onclick="decline_appointment_prompt(this)"
+            >
+              <i class="fas fa-times is-size-4"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <p class="subtitle has-text-centered">
+        No confirmed appointments
+      </p>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -164,12 +190,14 @@
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          location.reload();
         });
     } else if (confirm === false) {
       fetch(`booking/${id}/decline`)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          location.reload();
         });
     }
   };

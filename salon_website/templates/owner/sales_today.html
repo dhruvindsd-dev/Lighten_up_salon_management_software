@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section has-text-centered">
+  <p class="title">
+    Today Sales
+  </p>
+  <a class="button magenta_btn" onclick="window.location.href = window.location.pathname + '/add'"><span class="icon"><i
+        class="fas fa-plus"></i></span>
+    <span>Add Sale</span></a>
+</div>
+<table class="table is-fullwidth has-background-light" style="text-align: center; vertical-align: middle;">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Service</th>
+      <th class="is-hidden-mobile">Discout Given</th>
+      <th>Price <br> <span style="font-size:  small; font-weight: 100;">(after discount)</span></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for sale in sales reversed %}
+    <tr>
+      <td>{{sale.cli.name}}</td>
+      <td>
+        {{sale.services}}
+      </td>
+      <td class="is-hidden-mobile">{{sale.discount}}%</td>
+      <td>
+        ₹{{sale.true_price}}
+      </td>
+      <td>
+        <span class="icon is-size-4 is-size-6-mobile check-icon-hover"><i class="fas fa-edit"> </i></span>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

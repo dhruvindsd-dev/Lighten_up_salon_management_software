@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section">
+  <p class="title has-text-centered">
+    <span class="title-border">
+      Your services
+    </span>
+  </p>
+  <div class="field">
+    <div class="control has-icons-left">
+      <input type="text" class="input" style="border: 2px solid rgb(68, 68, 68);" onkeyup="cli_name_serch(this)"
+        placeholder="Seach any service name or catagory">
+      <span class="icon is-left"><i class="fas fa-search" style="color: rgb(68, 68, 68);"></i></span>
+    </div>
+  </div>
+  <p class="has-text-centered">
+
+    <a onclick="window.location.href = `${window.location.pathname}/create`" class="button magenta_btn">
+      <span class="icon"><i class="fas fa-plus"></i></span>
+      <span>Add service </span></a>
+  </p>
+</div>
+<div class="section" style="padding-top: 0px ;">
+  <div class="columns is-centered">
+    <table class="table is-fullwidth has-background-light" style="vertical-align: middle;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Catagory</th>
+          <th>Edit </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in services %}
+        <tr>
+          <td>{{i.name}}</td>
+          <td>₹{{i.price}}</td>
+          <td>{{i.catagory}}</td>
+          <td><span class="icon check-icon-hover is-size-5">
+              <i class="far fa-edit"></i></span></td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  function cli_name_serch(el) {
+    data = [...document.querySelectorAll('tr')]
+
+    for (let i = 0; i < data.length; i++) {
+
+      if (data[i].innerText.toUpperCase().indexOf(el.value.toUpperCase()) > -1) {
+        data[i].style.display = ''
+      } else {
+        data[i].style.display = 'none'
+      }
+
+    }
+  }
+</script>
+{% endblock %}

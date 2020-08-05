@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% content block %}
-<div class="hero is-fullheight has-background-danger">
+{% extends 'base.html' %} {% block content %}
+<div class="hero is-fullheight">
   <div class="hero-body">
-    <div class="section has-text-centered">
+    <div class="container has-text-centered">
       <p class="title">You are not logged in</p>
-      <a href="/staff-login" class="subtitle">Click here to Login </a>
+      <a href="/staff-login" class="button is-medium is-danger is-outlined">Click here to Login </a>
     </div>
   </div>
 </div>

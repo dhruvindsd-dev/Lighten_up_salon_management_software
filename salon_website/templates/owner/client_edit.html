@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="/static/calender/css/calendar.min.css">
+ <link rel="stylesheet" href="/static/css/bulma.min.css">
+ <title>Client Login Info </title>
+</head>
+
+<body onload="set_og_date()">
+ <div class="section">
+  <p class="title">Client {{cli.name|title }}</p>
+ </div>
+ <div class="section" style="padding-top: 0px;">
+  <form method="post"> {% csrf_token %}
+   <div class="field">
+    <label class="label">Client Name</label>
+    <div class="control">
+     <input type="text" class="input" value="{{cli.name}}" name="cli_name">
+    </div>
+   </div>
+   <div class="field">
+    <label class="label">Contact number</label>
+    <div class="control">
+     <input type="text" class="input" value="{{cli.number}}" name="cli_number">
+    </div>
+   </div>
+   <div class="field">
+    <label class="label">Anniversery Date</label>
+    <div class="control">
+     <input type="date" class="input anniversery" name="cli_anniversery">
+    </div>
+   </div>
+
+   <div class="field">
+    <label class="label">Date of birth </label>
+    <div class="control">
+     <input type="date" class="input dob" name="cli_dob">
+    </div>
+   </div>
+   <button class="button is-link is-outlined is-light">Save</button>
+  </form>
+ </div>
+ <script src="/static/calender/js/calendar.min.js"> </script>
+ <script>
+  // Initialize all input of date type.
+  const calendars = bulmaCalendar.attach('[type="date"]', {
+   dateFormat: 'DD-MMM-YYYY'
+  });
+  // document.querySelector('.anni').value = '{{cli.anniversery|date:"d/m/Y"}}'
+
+  // Loop on each calendar initialized
+  calendars.forEach(calendar => {
+   // Add listener to date:selected event
+   calendar.on('date:selected', date => {
+    console.log(date);
+   });
+  });
+  const set_og_date = () => {
+   document.querySelector('.anniversery').parentElement.children[0].value = '{{cli.anniversery|date:"d-M-Y"}}';
+   document.querySelector('.dob').parentElement.children[0].value = '{{cli.date_of_birth|date:"d-M-Y"}}';
+   document.querySelector('.anniversery').value = '{{cli.anniversery|date:"d-M-Y"}}';
+   document.querySelector('.dob').value = '{{cli.date_of_birth|date:"d-M-Y"}}';
+  }
+ </script>
+</body>
+
+</html>

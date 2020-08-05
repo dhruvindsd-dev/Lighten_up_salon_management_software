@@ -1,0 +1,311 @@
+{% extends 'base.html' %} {% block content %}
+<!-- todo :  -->
+<!-- show cli number field  -->
+<!--  show services page like appoitment services  -->
+<!-- show discoount tab or price paid  -->
+<link rel="stylesheet" href="/static/calender/css/calendar.min.css">
+
+<div class="section">
+  <p class="title has-text-centered-mobile">
+    New Sale
+  </p>
+  <br />
+  <form method="post" onsubmit=""> {% csrf_token %}
+    <div class="field">
+      <label class="label">Client Number</label>
+      <p class="help is-success">Client Name: <span
+          class="auto_cli_name has-text-weight-bold ">{{og_sale.cli.name}}</span>
+      </p>
+      <div class="control has-icons-left">
+        <input value="{{og_sale.cli.number}}" type="text" class="input old_client_num" list="auto_fill_cli"
+          oninput="auto_name(this);" placeholder="Enter client phone number" name="old_client_num" />
+        <span class="icon is-left">
+          <i class="fas fa-phone-alt"></i>
+        </span>
+        <datalist id="auto_fill_cli">
+          {% for cli in autosearch_clients %}
+          <option class="{{cli.number}} {{cli.name|cut:' '}}" value="{{cli.number}} ({{cli.name}})">
+            {% endfor %}
+
+        </datalist>
+      </div>
+
+    </div>
+    <p class=" is-size-3 has-text-centered"> <span class="title-border">OR </span> </p> <br>
+    <div class="field">
+      <label class="label">New Client</label>
+      <div class="control has-icons-left">
+        <input class="input new_client_name" type="text" placeholder="Client Name" name="new_client_name">
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control has-icons-left">
+        <input class="input new_client_number" type="number" placeholder="Client Number" name="new_client_number">
+        <span class="icon is-small is-left">
+          <i class="fas fa-phone-alt"></i>
+        </span>
+      </div>
+    </div>
+    <div class="date_form is-hidden">
+      <div class="field">
+        <label class="label">Anniversery Date</label>
+        <div class="control">
+          <input type="date" class="input anniversery_date" name="cli_anniversery">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Date of birth </label>
+        <div class="control">
+          <input type="date" class="input dob" name="cli_dob">
+        </div>
+      </div>
+    </div>
+    <br>
+    <a onclick="document.querySelector('.date_form').classList.remove('is-hidden'); this.classList.add('is-hidden')"
+      class="button  magenta_btn date_toggle">Add New
+      Clients Anniversery And Birthday</a>
+    <br>
+    <div class="field">
+      <label class="label">Services</label>
+      <ul class="selected_services" style="list-style: square;list-style-position: inside;"></ul>
+      <p class="has-text-success is-size-6" style="display: none; margin-top: 10px;"><span
+          class="has-text-weight-bold">Total</span> :
+        ₹<span class="total_price"></span>
+      </p>
+      <input type="text" class="input" id="selected_services_input" style="display: none;" name="selected_ser">
+      <input type="text" class="input" id="og_price" style="display: none;" name="og_price">
+      <br />
+      <a class="button magenta_btn"
+        onclick="document.querySelector('.services_selection').classList.add('is-active')"><span class="icon"><i
+            class="fas fa-plus"></i></span> <span>add services</span></a>
+    </div>
+    <!-- Services Modal START -->
+    <div class="modal services_selection">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head has-background-white">
+          <p class="modal-card-title">
+            <strong>Select Your Services</strong>
+          </p>
+          <div class="delete" onclick="this.parentElement.parentElement.parentElement.classList.remove('is-active')">
+          </div>
+        </header>
+        <section class="modal-card-body has-background-white">
+          {% for service in filtered_services %}
+          {% if service.catagory == 'Threading'%}
+          <div class="control">
+            <p><strong class="title-border">CONTACTLESS THREADING</strong></p>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" checked onchange="negi_selector_checkbox(this, true, `{{service.catagory|cut:' '}}`)"
+              name="contactless_threading" class="{{service.catagory|cut:' '}}" />I don't need contactless
+            threading</label>
+          <br />
+          {% for different_ser in service.services %}
+          <label class="checkbox">
+            <input type="checkbox" name="contactless_threading"
+              onchange="negi_selector_checkbox(this, false, `{{service.catagory|cut:' '}}`)"
+              class="{{service.catagory|cut:' '}}" />{{different_ser.name}} -- <span class="price less-opacity">
+              ({{different_ser.price}})</span>
+          </label>
+          <br />
+          {% endfor %} {% elif service.catagory == 'Hair Care' %}
+          <div class="control">
+            <p>
+              <strong class="title-border">{{service.catagory}}</strong>
+            </p>
+
+            <label class="checkbox">
+              <input type="checkbox" checked
+                onchange="negi_selector_checkbox(this, true,`{{service.catagory|cut:' ' }}`)" name="hair_care"
+                class="{{service.catagory|cut:' '}}" />
+              I don't need hair care
+            </label>
+            <br />
+            {% for different_ser in service.services %}
+            <label class="checkbox">
+              <input type="checkbox" class="{{service.catagory|cut:' '}}" name="hair_care"
+                onchange="negi_selector_checkbox(this, false,`{{service.catagory|cut:' '}}`)" />
+              {{different_ser.name}} -- <span class="price less-opacity">({{different_ser.price}})</span>
+            </label>
+            <br />
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="control">
+            <p><strong class="title-border">{{service.catagory}}</strong></p>
+            <label class="radio">
+              <input type="radio" checked name="{{service.catagory}}" />
+              I don't need {{service.catagory}}
+            </label>
+            <br>
+            {% for different_ser in service.services %}
+            <label class="radio">
+              <input type="radio" name="{{service.catagory}}" />
+              {{different_ser.name}} -- <span class="price less-opacity">
+                ({{different_ser.price}})
+              </span>
+            </label>
+            <br />
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </section>
+        <footer class="modal-card-foot">
+          <a class="button is-success" onclick="salon_service_selector();">Done
+          </a>
+        </footer>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Discout Given : </label>
+      <div class="control has-icons-left">
+        {% if og_sale.discount %}
+        <input value="{{og_sale.discount}}" type="number" class="input" name="discount" oninput="auto_discount(this);"
+          id="discount_input">
+        {% else %}
+        <input value="0" type="number" class="input" name="discount" oninput="auto_discount(this);" id="discount_input">
+        {% endif %}
+        <span class="icon is-small is-left">
+          <i class="fas fa-percentage"></i>
+        </span>
+      </div>
+      <p class="help is-success auto_discount_display"></p>
+    </div>
+    <!-- Services Modal END -->
+    <button class="button magenta_btn"> Add Sale</button>
+  </form>
+</div>
+<script src="/static/calender/js/calendar.min.js"> </script>
+
+<script>
+  document.querySelector('.new_client_number').addEventListener("focusin", () => {
+    const date = document.querySelector('.date_prompt')
+    if (document.querySelector('.date_form').classList.contains('is-hidden')) {
+      date.classList.add('is-active')
+    }
+  });
+
+  const calendars = bulmaCalendar.attach('[type="date"]', {
+    dateFormat: 'YYYY-MM-DD'
+  });
+  // document.querySelector('.anni').value = '{{cli.anniversery|date:"d/m/Y"}}'
+
+  // Loop on each calendar initialized
+  calendars.forEach(calendar => {
+    // Add listener to date:selected event
+    calendar.on('date:selected', date => {
+      console.log(date);
+    });
+  });
+  const negi_selector_checkbox = (el, bool, className) => {
+    if (bool == true) {
+      if (el.checked === true) {
+        const element = document.querySelectorAll(`.${className}`);
+        for (let i = 0; i < element.length; i++) {
+          element[i].checked = false;
+        }
+      }
+      el.checked = true;
+    } else {
+      document.querySelector(`.${className}`).checked = false;
+    }
+  };
+  //  selects the services shown by the modal and  adds them in a list
+  const salon_service_selector = () => {
+    const modal_selection = document
+      .querySelector(".services_selection")
+      .querySelectorAll("input");
+    const selected_ser = document.querySelector(".selected_services");
+    let temp = "";
+    let temp2 = "";
+    let total = 0;
+    for (let i = 0; i < modal_selection.length; i++) {
+      if (modal_selection[i].checked === true) {
+        if (
+          modal_selection[i].parentElement.innerText.search("don't") === -1) {
+          total = parseInt(modal_selection[i].parentElement.querySelector('.price').innerText.replace(')', '')
+            .replace('(',
+              '')) + total;
+          temp2 =
+            temp2 + modal_selection[i].parentElement.innerText + ",";
+          temp =
+            temp +
+            "<li>" +
+            modal_selection[i].parentElement.innerText +
+            "</li>";
+        }
+      }
+    }
+    document.querySelector('.total_price').innerText = total;
+    document.querySelector('#og_price').value = total
+    document.querySelector('.total_price').parentElement.style.display = '';
+    // send data to django backend
+    document.querySelector("#selected_services_input").value = temp2;
+    selected_ser.innerHTML = temp;
+    document
+      .querySelector(".services_selection")
+      .classList.remove("is-active");
+  };
+  const auto_name = (el) => {
+    document.querySelector('.new_client_name').value = ''
+    document.querySelector('.new_client_number').value = ''
+    if (document.querySelector('.date_form').classList.contains('is-hidden') == false) {
+      document.querySelector('.date_form').classList.add('is-hidden');
+      document.querySelector('.date_toggle').classList.remove('is-hidden');
+    }
+    el.value = el.value.match(/\d+/)[0];
+    let list = document.querySelector('#auto_fill_cli').children;
+    list = [...list]
+    for (let i = 0; i < list.length; i++) {
+      if (el.value == list[i].classList[0]) {
+        document.querySelector('.auto_cli_name').innerHTML = list[i].classList[1];
+        break
+      } else {
+        document.querySelector('.auto_cli_name').innerHTML = ''
+
+      }
+    }
+  }
+  const auto_discount = (el) => {
+    // const final_price = document.querySelector('.final_price_input').value
+    const og_price = document.querySelector('.total_price').innerText
+    document.querySelector('.auto_discount_display').innerHTML =
+      `Final Price: ₹<span class=" has-text-weight-bold ">${ og_price - Math.round(((og_price * el.value) / 100))}</span>`
+  }
+  document.querySelector('.new_client_name').oninput = () => {
+    document.querySelector('.old_client_num').value = '';
+    document.querySelector('.auto_cli_name').innerText = '';
+
+  }
+  document.querySelector('.new_client_number').oninput = () => {
+    document.querySelector('.old_client_num').value = ''
+    document.querySelector('.auto_cli_name').innerText = ''
+  }
+  edit_service = () => {
+    all_inputs = [...document.querySelector('.services_selection').querySelectorAll('input')]
+    to_search = all_inputs[1].parentElement.innerText.replace(/\s/g, "");
+    let og_services = '{{og_sale.services}}';
+    og_services = og_services.replace(/\s/g, "").split(',')
+    og_services.pop()
+    og_services.indexOf(to_search)
+    all_inputs.map(item => {
+      if (og_services.indexOf(item.parentElement.innerText.replace(/\s/g, "")) !== -1) {
+        // take the item and add chdcked == true
+        item.checked = true
+      }
+    })
+    salon_service_selector()
+    auto_discount(document.querySelector('#discount_input'))
+  }
+  edit_service()
+  const form_verification = () => {
+    //  check for old or new client, atlest one should exist, 
+    //  check for total, should be greater than zero, 
+  }
+</script>
+{% endblock %}

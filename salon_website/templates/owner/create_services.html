@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section">
+  <p class="title">
+    New Service
+  </p>
+  <form method="POST" class="service_form">
+    {% csrf_token %}
+    <div class="field">
+      <label class="label"> Name</label>
+      <div class="control">
+        <input name="service_name" type="text" class="input" placeholder="Enter a new service name"
+          style="border: 2px solid rgba(0, 0, 0, 0.534);" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label"> Price </label>
+      <div class="control has-icons-left">
+        <input name="service_price" type="number" class="input" placeholder="Price of the new service "
+          style="border: 2px solid rgba(0, 0, 0, 0.534);" />
+        <input type="text" class="show_same" value="true" name="show_same" style="display: none;" />
+        <span class="icon is-small is-left">
+          <i class="fas fa-rupee-sign has-text-dark"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="field time_selection">
+      <label class="label">Average Time For The Service</label>
+      <input type="text" class="is-hidden service_time" name="service_time">
+      <div class="buttons">
+        <a class="button is-outlined" onclick="set_time(5, this)">5min</a>
+        <a class="button is-outlined" onclick="set_time(15, this)">15min</a>
+        <a class="button is-outlined" onclick="set_time(30, this)">30min</a>
+        <a class="button is-outlined" onclick="set_time(45, this)">45min</a>
+        <a class="button is-outlined" onclick="set_time(60, this)">1 hour </a>
+      </div>
+    </div>
+    <div class="fields">
+      <label class="label">Catagory</label>
+      <div class="control">
+        <div class="select" name="catagory">
+          <select style="border: 2px solid rgba(0, 0, 0, 0.534);" name="service_catagory">
+            <option>Threading</option>
+            <option>Waxing</option>
+            <option>Face Care</option>
+            <option>Bleach</option>
+            <option>Hair Care</option>
+            <option>Body Care </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <a class="button magenta_btn"
+      onclick=" document.querySelector('.show_same').value = 'false'; document.querySelector('.service_form').submit();">
+      <span class="icon"> <i class="fas fa-plus"></i></span>
+      <span>Create New Service</span>
+    </a>
+    <button class="button magenta_btn">Save and create a new Service</button>
+  </form>
+</div>
+<script>
+  const set_time = (time, el) => {
+    document.querySelector('.service_time').value = time;
+    [...document.querySelector('.time_selection').querySelectorAll('a')].map(item => {
+      item.classList.remove('is-link', 'is-light');
+    });
+    el.classList.add('is-link', 'is-light')
+  }
+</script>
+{% endblock %}

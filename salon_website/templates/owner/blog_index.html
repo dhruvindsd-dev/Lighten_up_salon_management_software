@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+<div class="section has-text-centered">
+  <p class="is-size-2 has-text-centered alegreya">
+    Lighten Up Salon's <span class="has-text-weight-semibold">Blog</span>
+  </p>
+  <br />
+  <a href="salon_services/create" class="button magenta_btn">Create Blogs</a>
+</div>
+<div class="columns is-centered">
+  <div class="column is-7">
+    {% for blog in blogs %}
+    <div class="card" onclick="window.location.href = 'salon_blog_view/{{blog.id}}'" style="
+        border: 1px solid rgba(85, 85, 85, 0.301);
+        border-radius: 0px 0px 7px 7px;
+        margin: 10px;
+      ">
+      <div class="card-image">
+        <figure class="image is-2by1">
+          <img src="{{blog.img_link}}" alt="" />
+        </figure>
+      </div>
+      <div class="card-content">
+        <p class="is-size-4 has-text-weight-bold">{{blog.title}}</p>
+        <p class="is-size-5">{{blog.description}}</p>
+        <p class="is-size-6" style="opacity: 0.6;">{{blog.created_on.date}}</p>
+      </div>
+    </div>
+    <br />
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Your blog</title>
+  <link rel="stylesheet" href="static/icons/css/all.css" />
+  <link rel="stylesheet" href="static/css/bulma.min.css?v={random nyumber/string}" />
+  <link href="static/quil/main.css" rel="stylesheet" />
+  <script src="static/quil/main.js"></script>
+  <style>
+    .ql-toolbar {
+      border: 2px solid rgba(0, 0, 0, 0.534) !important;
+      border-radius: 5px 5px 0px 0px;
+      z-index: 10;
+      width: 100%;
+      background-color: rgb(216, 216, 216);
+    }
+
+    button {
+      transition: 0.2s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="section">
+    <form onsubmit="event.preventDefault(); form_handle(this)" method="POST">
+      {% csrf_token %}
+      <div class="field">
+        <label class="label is-medium">Title</label>
+        <div class="control">
+          <input name="title" class="input" type="text" placeholder="main title*"
+            style="border: 2px solid rgba(0, 0, 0, 0.534);" />
+        </div>
+      </div>
+      <br />
+      <div class="field">
+        <label class="label is-medium">Description </label>
+        <div class="control">
+          <input name="description" type="text" class="input" placeholder="short description"
+            style="border: 2px solid rgba(0, 0, 0, 0.534);" />
+        </div>
+      </div>
+      <br />
+      <div class="field">
+        <label class="label is-medium">Content</label>
+        <div class="control">
+          <input name="content" type="text" style="display: none;" class="blog-content" />
+          <div class="has-text-dark" id="editor" style="
+                border: 2px solid rgba(0, 0, 0, 0.534);
+                font-size: 1rem;
+                border-radius: 0 0 5px 5px;
+                border-top: none;
+              "></div>
+        </div>
+      </div>
+      <div class="field">
+        <button class="button is-link is-outlined">Create Blog</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    var quill = new Quill("#editor", {
+      theme: "snow",
+      scrollingContainer: 'body',
+    });
+    const form_handle = (el) => {
+      document.querySelector(".blog-content").value = quill.root.innerHTML;
+      el.submit();
+    };
+
+    var startProductBarPos = -1;
+    window.onscroll = function () {
+      var bar = document.querySelector(".ql-toolbar");
+      if (startProductBarPos < 0) startProductBarPos = findPosY(bar);
+
+      if (pageYOffset > startProductBarPos) {
+        bar.style.position = "fixed";
+        bar.style.top = "5px";
+        bar.style.width = bar.parentElement.offsetWidth + "px";
+        bar.style.padding.top = "70px";
+        bar.parentElement.style.minHeight = "100vh";
+      } else {
+        bar.style.position = "relative";
+        bar.parentElement.style.minHeight = "0vh";
+      }
+    };
+
+    function findPosY(obj) {
+      var curtop = 0;
+      if (typeof obj.offsetParent != "undefined" && obj.offsetParent) {
+        while (obj.offsetParent) {
+          curtop += obj.offsetTop;
+          obj = obj.offsetParent;
+        }
+        curtop += obj.offsetTop;
+      } else if (obj.y) curtop += obj.y;
+      return curtop;
+    }
+    document.querySelector('.ql-toolbar').addEventListener('mousedown', () => {
+      event.preventDefault();
+      event.stopPropagation();
+
+    })
+  </script>
+</body>
+
+</html>

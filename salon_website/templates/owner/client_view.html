@@ -1,0 +1,74 @@
+ {% extends 'base.html' %}
+
+ {% block content %}
+ <div class="section">
+   <p class="title has-text-centered">
+     Client {{cli.name|title }}
+   </p>
+   <div class="columns is-centered">
+     <div class="column ">
+       <div class="tile is-ancestor">
+         <div class="tile is-parent ">
+           <div class="tile is-child notification pink_notification ">
+             <p class="has-text-centered"><span class="is-size-4 has-text-weight-bold"> ₹ {{sales}}</span> <br>
+               Total Revenue Made From Client
+             </p>
+           </div>
+         </div>
+         <div class="tile is-parent">
+           <div class="tile is-child notification pink_notification">
+             <p class="has-text-centered"><span class="is-size-4 has-text-weight-bold">{{visits}} times visited</span>
+               <br>
+               No of times client has visited your salon</p>
+           </div>
+         </div>
+         <div class="tile is-parent">
+           <div class="tile is-child notification pink_notification">
+             {% if type %}
+             <p class="has-text-centered">
+               <span class="is-size-4 has-text-weight-bold"> Active</span> <br>
+               Client visits your salon atleast once a month
+             </p>
+             {% else %}
+             <p class="has-text-centered">
+               <span class="is-size-4 has-text-weight-bold"> Inactive </span> <br>
+               Client does not visit your salon regularly
+             </p>
+             {% endif %}
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <fieldset disabled>
+     <div class="field">
+       <label class="label">Client Name</label>
+       <div class="control">
+         <input type="text" class="has-background-white input" value="{{cli.name|title}}">
+       </div>
+     </div>
+     <div class="field">
+       <label class="label">Contact Number</label>
+       <div class="control">
+         <input type="text" class="has-background-white input" value="{{cli.number}}">
+       </div>
+     </div>
+     <div class="field">
+       <label class="label">Anniversery Date</label>
+       <div class="control">
+         <input type="text" class="has-background-white input anniversery" value="{{cli.anniversery|date:"d-M-Y"}}">
+       </div>
+     </div>
+
+     <div class="field">
+       <label class="label">Date of birth </label>
+       <div class="control">
+         <input type="text" class="has-background-white input dob" value="{{cli.date_of_birth|date:"d-M-Y"}}">
+       </div>
+     </div>
+   </fieldset> <br>
+   <p class="has-text-centered">
+     <a href="/salon_clients_edit/{{cli.id}}" class="button magenta_btn">Edit</a>
+   </p>
+ </div>
+ {% endblock %}

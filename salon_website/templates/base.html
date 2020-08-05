@@ -1,70 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lighten Up Salon | Lighten Up Yourself</title>
+  {% load pwa %}
+
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lighten Up Salon | Lighten Up Yourself</title>
-    {% load pwa %}
-    <head>
-      {% progressive_web_app_meta %}
-    </head>
-    <!-- manifest.json -->
-    {% load static %}
-    <!-- <link rel="stylesheet" href="{% static 'css/bulma.min.css'%}" /> -->
-    <link href="static/icons/css/all.css" rel="stylesheet" />
-    <!--load all styles -->
-
-    <link
-      rel="stylesheet"
-      href="static/css/bulma.min.css?v={random number/string}"
-    />
-
-    <style>
-      img {
-        object-fit: cover;
-      }
-      hr {
-        background-color: #6e6e6e86;
-      }
-      td {
-        padding: 15px !important;
-      }
-      .services,
-      label {
-        margin-top: 15px;
-      }
-      .title-border {
-        border-bottom: 2px solid rgba(117, 117, 117, 0.322);
-        padding-bottom: 5px;
-      }
-      .date_btn {
-        display: inline-table;
-      }
-      .is-link:hover {
-        border-color: #3273dc !important;
-      }
-      .less-opacity {
-        opacity: 0.7;
-      }
-      .check-icon-hover {
-        transition: 0.2s ease;
-      }
-      .check-icon-hover:hover {
-        color: rgba(255, 0, 179, 0.897);
-        transform: scale(1.2);
-        cursor: pointer;
-      }
-      .cross-icon-hover {
-        transition: 0.2s ease;
-      }
-      .cross-icon-hover:hover {
-        color: rgba(255, 30, 0, 0.699);
-        transform: scale(1.2);
-        cursor: pointer;
-      }
-    </style>
+    {% progressive_web_app_meta %}
   </head>
-  <body class="has-background-light">
-    {% block content %} {% endblock %}
-  </body>
+  <!-- manifest.json -->
+  {% load static %}
+  <!-- <link rel="stylesheet" href="{% static 'css/bulma.min.css'%}" /> -->
+  <link href="/static/icons/css/all.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/loading.css">
+  <!--load all styles -->
+
+  <link rel="stylesheet" href="/static/css/bulma.min.css?v={random number/string}" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500&family=Roboto&display=swap" rel="stylesheet" />
+
+  <style>
+    html,
+    body {
+      width: auto !important;
+      /* overflow-x: hidden !important */
+    }
+
+    html {
+
+      scroll-behavior: smooth;
+    }
+
+    img {
+      object-fit: cover;
+    }
+
+    hr {
+      background-color: #6e6e6e86;
+    }
+
+    td {
+      padding: 15px !important;
+    }
+
+    .services,
+    label {
+      margin-top: 15px;
+    }
+
+    .title-border {
+      border-bottom: 2px solid rgba(117, 117, 117, 0.322);
+      padding-bottom: 5px;
+    }
+
+    .date_btn {
+      display: inline-table;
+    }
+
+    .is-link:hover {
+      border-color: #3273dc !important;
+    }
+
+    .less-opacity {
+      opacity: 0.7;
+    }
+
+    .check-icon-hover {
+      transition: 0.2s ease;
+    }
+
+
+    .check-icon-hover:hover {
+      color: rgba(255, 0, 179, 0.897);
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .cross-icon-hover {
+      transition: 0.2s ease;
+    }
+
+    .cross-icon-hover:hover {
+      color: rgba(255, 30, 0, 0.699);
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .alegreya {
+      font-family: "Alegreya", serif;
+    }
+
+    .magenta_btn {
+      background-color: rgb(255, 235, 245);
+      color: rgb(255, 0, 128);
+      border-color: rgb(255, 140, 194);
+      transition: 0.15s;
+    }
+
+    .magenta_btn:hover {
+      border-color: rgb(255, 140, 194);
+      background-color: rgb(255, 140, 194);
+      color: rgb(255, 0, 128);
+    }
+
+    .main_magenta_btn {
+      background-color: rgb(255, 0, 191);
+      color: rgb(255, 232, 243);
+    }
+
+    .main_magenta_btn:hover {
+      color: rgb(255, 233, 243);
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    .card {
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      cursor: pointer;
+    }
+
+    .hover_scale {
+      transition: 0.2s;
+    }
+
+    .hover_scale:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+
+    .margin-7 {
+      margin-top: 10px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+
+    .hover_scale_cli {
+      transition: 0.2s;
+    }
+
+    .hover_scale_cli:hover {
+      background-color: rgba(255, 180, 225, 0.856);
+      transform: scale(1.03);
+      cursor: pointer;
+    }
+
+    .pink_notification {
+      background-color: rgb(255, 205, 230);
+      color: rgb(255, 0, 128);
+      border: 2px solid rgba(255, 50, 152, 0.623);
+    }
+
+    .navbar {
+      z-index: 100;
+      transition: background-color .4s, padding .4s;
+    }
+  </style>
+</head>
+
+<body class="has-background-light" style="min-height: 100vh;font-family: 'Roboto', sans-serif;">
+  <div class="pageloader"><span class="title">Loading ...</span></div>
+
+  {% block content %} {% endblock %}
+</body>
+
 </html>

@@ -3,40 +3,24 @@
   <div class="columns">
     <div class="column">
       <figure class="imgage is-square">
-        <img src="static/img/appointment/hero.png" alt="" />
+        <img src="static/img/appointment/hero3.png" />
       </figure>
     </div>
     <div class="column">
-      <div class="section">
-        <div class="title">
+      <div class="section" style="padding-top: 0px;">
+        <div class="title alegreya">
           Book Your Appointment
         </div>
         <div class="subtitle">
           Fill the form below to book your appointment :
         </div>
-        <form
-          class="appointment_form"
-          method="post"
-          onsubmit="event.preventDefault(); form_verification(this)"
-        >
+        <form class="appointment_form" method="post" onsubmit="event.preventDefault(); form_verification(this)">
           {% csrf_token %}
           <div class="field name_field">
             <label class="label">Name</label>
             <div class="control has-icons-left">
-              <input
-                class="input"
-                type="text"
-                required
-                id="cli_name"
-                name="cli_name"
-                placeholder="Enter Your Name"
-              />
-              <input
-                type="text"
-                name="cli_token"
-                id="token_input"
-                style="display: none;"
-              />
+              <input class="input" type="text" required id="cli_name" name="cli_name" placeholder="Enter Your Name" />
+              <input type="text" name="cli_token" id="token_input" style="display: none;" />
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -46,33 +30,20 @@
           <div class="field num_field">
             <label class="label">Phone Number </label>
             <div class="control has-icons-left">
-              <input
-                class="input"
-                id="cli_number"
-                type="tel"
-                required
-                name="cli_number"
-                placeholder="Enter Your Phone Number "
-              />
+              <input class="input" id="cli_number" type="number" required name="cli_number"
+                placeholder="Enter Your Phone Number " />
               <span class="icon is-small is-left">
                 <i class="fas fa-phone-alt"></i>
               </span>
             </div>
           </div>
           <div class="field">
-            <input
-              type="text"
-              style="display: none;"
-              name="cli_services"
-              id="selected_services_input"
-            />
+            <input type="text" style="display: none;" name="cli_services" id="selected_services_input" />
             <strong>Selected Services :</strong> <br />
             <ul style="list-style-type: disc;" class="selected_services"></ul>
-            <a
-              class="button is-warning is-light is-outlined"
-              style="margin-top: 5px;"
-              onclick="this.parentElement.querySelector('.services_selection').classList.add('is-active')"
-            >
+            <p class="has-text-success is-hidden">Total: ₹<span class="ser_total">400</span></p>
+            <a class="button is-info is-light is-outlined" style="margin-top: 5px;"
+              onclick="this.parentElement.querySelector('.services_selection').classList.add('is-active')">
               <span class="icon"> <i class="fas fa-plus"></i></span>
               <span>Add Services</span>
             </a>
@@ -87,332 +58,88 @@
                   <p class="modal-card-title">
                     <strong>Select Your Services</strong>
                   </p>
-                  <div
-                    class="delete"
-                    onclick="this.parentElement.parentElement.parentElement.classList.remove('is-active')"
-                  ></div>
                 </header>
                 <section class="modal-card-body has-background-white">
-                  <!-- Content ... -->
-                  <!-- Facial  -->
+                  {% for service in filtered_services %}
+                  {% if service.catagory == 'Threading' %}
                   <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border">FACIAL</strong>
+                    <p><strong class="title-border">CONTACTLESS THREADING</strong></p>
+                  </div>
+                  <label class="checkbox">
+                    <input type="checkbox" checked
+                      onchange="negi_selector_checkbox(this, true, `{{service.catagory|cut:' '}}`)"
+                      name="contactless_threading" class="{{service.catagory|cut:' '}}" />
+                    I don't need contactless threading
+                  </label>
+                  <br />
+                  {% for different_ser in service.services %}
+                  <label class="checkbox">
+                    <input type="checkbox" name="contactless_threading"
+                      onchange="negi_selector_checkbox(this, false, `{{service.catagory|cut:' '}}`)"
+                      class="{{service.catagory|cut:' '}}" />
+                    {{different_ser.name}} -- (₹<span class="ser_price">{{different_ser.price}}</span>)
+                  </label>
+                  <br />
+                  {% endfor %} {% elif service.catagory == 'Hair Care' %}
+                  <div class="control">
+                    <p>
+                      <strong class="title-border">{{service.catagory}}</strong>
                     </p>
 
-                    <label class="radio">
-                      <input type="radio" checked name="facial" />
-                      I don't need Facial
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Power Brightening And Skin Tone Radiance Facial. ----
-                      ($30)
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Glovite Lighting Facial
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Sara Fruit CleanUp
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Oil Control Treatment (O3+)
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Feel Youtful Anti-Ageing Facial (O3+ )
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="facial" />
-                      Shine And Glow Facial With Peel Of Mask (O3+ )
-                    </label>
-                    <br />
-                    <br />
-                  </div>
-                  <!-- Hair Care -->
-                  <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border">Hair Care</strong>
-                    </p>
                     <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        checked
-                        onchange="hair_care_selector(this, false)"
-                        name="hair_care"
-                        id="negi_hair_care"
-                      />
+                      <input type="checkbox" checked
+                        onchange="negi_selector_checkbox(this, true,`{{service.catagory|cut:' ' }}`)" name="hair_care"
+                        class="{{service.catagory|cut:' '}}" />
                       I don't need hair care
                     </label>
                     <br />
+                    {% for different_ser in service.services %}
                     <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        class="hair_care"
-                        name="hair_care"
-                        onchange="hair_care_selector(this, true)"
-                      />
-                      Head Message
+                      <input type="checkbox" class="{{service.catagory|cut:' '}}" name="hair_care"
+                        onchange="negi_selector_checkbox(this, false,`{{service.catagory|cut:' '}}`)" />
+                      {{different_ser.name}} -- (₹<span class="ser_price">{{different_ser.price}}</span>)
                     </label>
                     <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        class="hair_care"
-                        name="hair_care"
-                        onchange="hair_care_selector(this, true)"
-                      />
-                      Henna - provided by the customer
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        class="hair_care"
-                        name="hair_care"
-                        onchange="hair_care_selector(this, true)"
-                      />
-                      Color
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        class="hair_care"
-                        name="hair_care"
-                        onchange="hair_care_selector(this, true)"
-                      />
-                      Root TouchUp -upto 2 inches
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        class="hair_care"
-                        name="hair_care"
-                        onchange="hair_care_selector(this, true)"
-                      />
-                      Hair Spa -upto waist length
-                    </label>
-                    <br />
-                    <br />
+                    {% endfor %}
                   </div>
-                  <!-- Pedicure  -->
+                  {% else %}
                   <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border">PEDICURE</strong>
-                    </p>
+                    <p><strong class="title-border">{{service.catagory}}</strong></p>
                     <label class="radio">
-                      <input type="radio" checked name="pedicure" />
-                      I don't need pedicure
+                      <input type="radio" checked name="{{service.catagory}}" />
+                      I don't need {{service.catagory}} fking test bitch
+                    </label>
+                    <br>
+                    {% for different_ser in service.services %}
+                    <label class="radio">
+                      <input type="radio" name="{{service.catagory}}" />
+                      {{different_ser.name}} -- (₹<span class="ser_price">{{different_ser.price}}</span>)
                     </label>
                     <br />
-                    <label class="radio">
-                      <input type="radio" name="pedicure" />
-                      BubbleGum Spa Pedicure.
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="pedicure" />
-                      Classic pedicure
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="pedicure" />
-                      Cut File and Polish Feet
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="pedicure" />
-                      Detan pedicure
-                    </label>
-                    <br />
-                    <br />
+                    {% endfor %}
                   </div>
-                  <!-- Threading -->
-                  <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border"
-                        >CONTACTLESS THREADING</strong
-                      >
-                    </p>
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        checked
-                        onchange="contactless_threading_selector(this, false)"
-                        name="contactless_threading"
-                        id="negi_thread"
-                      />
-                      I don't need contactless threading
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Eyebrows
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Upper Lip
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Chin
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Forehead
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Sidelocks
-                    </label>
-                    <br />
-                    <label class="checkbox">
-                      <input
-                        type="checkbox"
-                        name="contactless_threading"
-                        onchange="contactless_threading_selector(this, true)"
-                        class="threading"
-                      />
-                      Full Face
-                    </label>
-                    <br />
-                    <br />
-                  </div>
-                  <!-- Manicure -->
-                  <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border"> MANICURE</strong>
-                    </p>
-                    <label class="radio">
-                      <input type="radio" checked name="manicure" />
-                      I don't need menicure </label
-                    ><br />
-                    <label class="radio">
-                      <input type="radio" name="manicure" />
-                      Cut, File & Polish - Hands </label
-                    ><br />
-                    <label class="radio">
-                      <input type="radio" name="manicure" />
-                      Classic Manicure </label
-                    ><br />
-                    <label class="radio">
-                      <input type="radio" name="manicure" />
-                      Detan Manicure </label
-                    ><br />
-                    <br />
-                  </div>
-                  <!--  Bleach -->
-                  <div class="control">
-                    <p class="is-size-6">
-                      <strong class="title-border"> BLEACH </strong>
-                    </p>
-                    <label class="radio">
-                      <input type="radio" checked name="bleach" />
-                      I don't need bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Face & Nect Bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Full Arms Bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Full Legs Bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Front Bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Full Body Bleach
-                    </label>
-                    <br />
-                    <label class="radio">
-                      <input type="radio" name="bleach" />
-                      Back Bleach
-                    </label>
-                    <br />
-                  </div>
+                  {% endif %}
+                  {% endfor %}
                 </section>
                 <footer class="modal-card-foot">
-                  <a
-                    class="button is-success"
-                    onclick="salon_service_selector();"
-                    >Done
+                  <a class="button magenta_btn is-fullwidth" onclick="salon_service_selector();">Done
                   </a>
                 </footer>
               </div>
             </div>
             <!-- SERVIES END  -->
           </div>
+          <!--  DATE MODAL START -->
           <div class="field">
             <p class="is-size-6">
               <strong>Selected Data and time : </strong>
               <span class="select_date_time"></span>
             </p>
-            <input
-              type="text"
-              style="display: none;"
-              name="cli_time"
-              id="selected_time_input"
-            />
-            <a
-              style="margin-top: 5px;"
-              class="button is-warning is-light is-outlined"
-              onclick="document.querySelector('.date_time_modal').classList.add('is-active');"
-            >
+            <input type="text" style="display: none;" name="cli_time" id="selected_time_input" />
+            <a style="margin-top: 5px;" class="button is-info is-light is-outlined"
+              onclick="document.querySelector('.date_time_modal').classList.add('is-active');">
               <span class="icon"> <i class="fas fa-clock"></i></span>
-              <span>Select date and time </span></a
-            >
+              <span>Select date and time </span></a>
             <div class="modal date_time_modal">
               <div class="modal-background"></div>
               <div class="modal-card">
@@ -421,34 +148,29 @@
                   <p class="has-text-centered is-size-5">
                     When should we expect you ?
                   </p>
-                  <div
-                    class="is-size-6 has-text-centered date-time-err has-text-danger"
-                  ></div>
+                  <div class="is-size-6 has-text-centered date-time-err has-text-danger"></div>
                   <br />
                   <div class="buttons is-centered date_class_selection">
                     {% for time_item in select_time %}
-                    <a
-                      class="button date_btn is-outlined date_block_btn"
-                      id="date{{forloop.counter0}}"
-                      onclick="date_toggle(this)"
-                    >
-                      {{time_item.day}} <br />
-                      <strong>{{time_item.date}}</strong>
+                    <a class="button date_btn is-outlined date_block_btn" id="date{{forloop.counter0}}"
+                      onclick="date_toggle(this)"> <span class="date_obj" id="date{{time_item.date|date:'Y-m-d'}}">
+                        {{time_item.date|date:'D'}} <br />
+                        <strong>{{time_item.date|date:'j S'}}</strong>
+                      </span>
                     </a>
                     {% endfor %}
                   </div>
-                  <div
-                    class="time_block buttons is-centered time_class_selection"
-                  >
-                    <p class="is-size-6" id="cmd_date">Select a date</p>
-
-                    {% for item in select_time %}
-                    <div id="time{{forloop.counter0}}" style="display: none;">
-                      {% for avail_time in item.time %}
-                      <a
-                        class="button is-outlined date_btn"
-                        onclick="time_toggle(this)"
-                        >{{avail_time}}
+                  <div class="time_block buttons is-centered time_class_selection">
+                    {% for time in select_time %}
+                    <div id="time{{forloop.counter0}}" style="display: none;" class="has-text-centered">
+                      {% for avail_time in time.time %}
+                      <a class="button is-outlined date_btn" id="time{{avail_time|date:'g:i A'}}"
+                        onclick="time_toggle(this)">
+                        {% if avail_time|date:'i' == '00' %}
+                        {{avail_time|date:'g a'}}
+                        {% else %}
+                        {{avail_time|date:'g:i a'}}
+                        {% endif %}
                       </a>
                       {% endfor %}
                     </div>
@@ -456,20 +178,19 @@
                   </div>
                 </section>
                 <footer class="modal-card-foot">
-                  <a
-                    class="button is-success is-light is-outlined"
-                    onclick="date_time_selector()"
-                    >Done</a
-                  >
+                  <a class="button magenta_btn is-fullwidth" onclick="date_time_selector()">Done</a>
                 </footer>
               </div>
             </div>
           </div>
+          <!--  DATE MODAL END -->
           <br />
           <div class="field is-grouped">
             <div class="control">
               <!-- will submit the form when pressed -->
-              <button class="button is-link">Book Appointment</button>
+              <button class="button is-link book_btn">
+                <span class="icon"><i class="fas fa-calendar-check"></i></span> <span> Book Appointment</span>
+              </button>
             </div>
           </div>
         </form>
@@ -482,17 +203,34 @@
             </p>
             <p class="notification_err"></p>
             <br />
-            <a
-              class="button is-light is-link is-outlined allow_notification_btn"
-              onclick=" Notification.requestPermission().then((response) => {
+            <a class="button is-light is-link is-outlined allow_notification_btn" onclick=" Notification.requestPermission().then((response) => {
               get_notified();
-            });"
-              >Allow Notifications</a
-            >
+            });">Allow Notifications</a>
             <a class="button is-light is-danger is-outlined">
               <span class="icon"><i class="fas fa-times"></i></span>
               <span>Cancel</span>
             </a>
+          </div>
+          <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+        <div class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content notification has-background-light">
+            <p class="is-size-4 has-text-centered has-text-weight-bold">I am safe and healthy</p>
+            <p class="less-opacity">COVOID-19 Self Health Declaration. Your honest response will ensure your safety as
+              well as us</p>
+            <br>
+            <ul style="list-style: circle; padding-top: 0px; padding-bottom: 0px;" class="section">
+              <li>I am not suffering from flu-like symptoms: Fever, Cough, Breathlessness, Sore throat etc.</li>
+              <li>I have not traveled domestically or internationally in last 14 days.</li>
+              <li>I have not come in contact with any COVID-19 case in last 14 days. </li>
+              <!-- <li>I understand that while, Lighten-Up
+                is taking all necessary safety & hygiene
+                precautions, it cannot be held liable in the unfortunate event that a customer or professional is
+                diagnosed with COVID-19</li> -->
+            </ul>
+            <br>
+            <p class="has-text-centered"> <a class="button is-fullwidth magenta_btn"> I agree</a></p>
           </div>
           <button class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -502,6 +240,7 @@
         <script>
           const get_notified = () => {
             if (Notification.permission == "granted") {
+              document.querySelector(".book_btn").classList.add("is-loading");
               // show prompt and submit form irrespective of the btn
               var firebaseConfig = {
                 apiKey: "AIzaSyADIG5COZpFunikdaa6M9WOLOhTAdCNlcU",
@@ -562,29 +301,17 @@
             }
           };
           // checkbox hair selector, removes checks from eveyother box when clicked on i dont need service and vice-versa
-          const hair_care_selector = (el, bool) => {
-            if (bool == false) {
+          const negi_selector_checkbox = (el, bool, className) => {
+            if (bool == true) {
               if (el.checked === true) {
-                const hair_el = document.querySelectorAll(".hair_care");
-                for (let i = 0; i < hair_el.length; i++) {
-                  hair_el[i].checked = false;
+                const element = document.querySelectorAll(`.${className}`);
+                for (let i = 0; i < element.length; i++) {
+                  element[i].checked = false;
                 }
               }
+              el.checked = true;
             } else {
-              document.querySelector("#negi_hair_care").checked = false;
-            }
-          };
-          //  same func as above but in this case for threading
-          const contactless_threading_selector = (el, bool) => {
-            if (bool === false) {
-              if (el.checked) {
-                const threading_el = document.querySelectorAll(".threading");
-                for (let i = 0; i < threading_el.length; i++) {
-                  threading_el[i].checked = false;
-                }
-              }
-            } else {
-              document.querySelector("#negi_thread").checked = false;
+              document.querySelector(`.${className}`).checked = false;
             }
           };
           //  selects the services shown by the modal and  adds them in a list
@@ -595,12 +322,13 @@
             const selected_ser = document.querySelector(".selected_services");
             let temp = "";
             let temp2 = "";
+            let total = 0;
             for (let i = 0; i < modal_selection.length; i++) {
               if (modal_selection[i].checked === true) {
                 if (
-                  modal_selection[i].parentElement.innerText.search("don't") ===
-                  -1
-                ) {
+                  modal_selection[i].parentElement.innerText.search("don't") === -1) {
+                  //  add price logic here. 
+                  total = total + parseInt(modal_selection[i].parentElement.querySelector('.ser_price').innerText)
                   temp2 =
                     temp2 + modal_selection[i].parentElement.innerText + ",";
                   temp =
@@ -611,6 +339,9 @@
                 }
               }
             }
+            // send data to django backend
+            document.querySelector('.ser_total').innerText = total;
+            document.querySelector('.ser_total').parentElement.classList.remove('is-hidden')
             document.querySelector("#selected_services_input").value = temp2;
             selected_ser.innerHTML = temp;
             document
@@ -622,19 +353,20 @@
             const selected_services = document.querySelector(
               ".selected_services"
             );
-            if (selected_services.innerHTML === "") {
+            if (selected_services.innerHTML === "" || selected_services.innerText == " Please Add A Service") {
               selected_services.innerHTML =
-                '<p class="has-text-danger"> Please Add A Service </p>';
+                '<p class="has-text-danger"> <span class="icon is-medium is-size-5" > <i class="fas fa-exclamation-triangle"> </i> </span> <span> Please Add A Service</span> </p>';
               return false;
             }
             const date_time_err = document.querySelector(".select_date_time");
 
-            if (date_time_err.innerText === "") {
+            if (date_time_err.innerText === "" || date_time_err.innerText == ' Please Select Date and time') {
               date_time_err.innerHTML =
-                "<p class='has-text-danger'> Please Select Date And Time </p> ";
+                '<p class="has-text-danger"> <span class="icon is-medium is-size-5" > <i class="fas fa-exclamation-triangle"> </i> </span> <span> Please Select Date and time </span> </p> ';
               return false;
             }
             get_notified();
+
           };
           const form_submit = () => {
             localStorage.setItem(
@@ -668,7 +400,6 @@
               .classList.add("is-link", "is-light");
           });
           const date_toggle = (el) => {
-            document.querySelector("#cmd_date").style.display = "none";
             document
               .querySelector(".time_block")
               .querySelectorAll("div")
@@ -698,15 +429,21 @@
           // validates time selection before closing the modal and setting the date and time selected by the user on the home page.
           const date_time_selector = () => {
             let err_bool = false;
-            var date, time;
+            var date, time, date_to_pass;
             try {
               date = document
                 .querySelector(".date_class_selection")
                 .querySelector(".is-link")
                 .innerText.replace("\n", " ");
+
+              date_to_pass = document
+                .querySelector(".date_class_selection")
+                .querySelector(".is-link").querySelector('.date_obj').id.replace('date', '');
+
               time = document
                 .querySelector(".time_class_selection")
-                .querySelector(".is-link").innerText;
+                .querySelector(".is-link").id.replace('time', '');
+
             } catch (err) {
               err_bool = true;
               document.querySelector(".date-time-err").innerText =
@@ -721,7 +458,7 @@
                 ).innerText = `${time} on ${date}`;
                 document.querySelector(
                   "#selected_time_input"
-                ).value = `${time}-${date}`;
+                ).value = `${time}%${date_to_pass}`;
               } else {
                 console.log("some error occured");
               }

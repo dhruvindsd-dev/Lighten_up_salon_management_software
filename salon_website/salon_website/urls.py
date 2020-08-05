@@ -18,7 +18,8 @@ from django.urls import path, include
 from home.views import *
 from appointment.views import *
 from owner.views import *
-
+from blog.views import *
+from sales.views import *
 
 urlpatterns = [
     path('', include('pwa.urls')),
@@ -26,17 +27,42 @@ urlpatterns = [
     path('', index),
     path('firebase-messaging-sw.js',
          ServiceWorkerView.as_view(), name='service_worker'),
-    # path('offline-sw.js',
-    #      Offline_ServiceWorkerView.as_view(), name='service_worker'),
+
     path('notification_token_csrf/<str:token>', notification_token_regi),
     # appointment urls
+
     path('book_appointment', appointment_index),
     # admin and owner urls
     path('staff-login', account_verification),
-    path('staff-logged-in', account_verification),
+    path('staff_loged_in/<str:username>', account_verified),
+    path('not_logged_in', not_logged_in),
+    #  appointment
     path('owner-appointment', appointment_handle),
     path('booking/<int:id>/confirm', appointment_confirm),
     path('booking/<int:id>/decline', appointment_decline),
+    # admin blog
+    path('salon_blog', blog_admin_index),
+    path('salon_blog_view/<int:blog_id>', view_blog),
+    path('salon_create_blog', create_blog),
+    path('salon_blog_img', img_selection),
+    # path('salon_blog_img/<str:img_link>', img_selection),
+    path('salon_img_save/<int:id>/<path:img_link>', img_selection),
 
+    # sales
+    path('sales', sales_index),
+    path('sale_add', add_sales),
+    path('sale_view/<str:date>', sales_view),
+    path('sale_edit/<str:id>', sale_edit),
 
+    # services
+    path('salon_services', services_index),
+    path('salon_services/create', create_services),
+    path('salon_services/edit', edit_services),
+    
+    # ADMIN CLIENT HANDLE:
+    path("salon_clients", admin_client_index),
+    path('salon_clients_view/<int:id>', admin_client_view),
+    path('salon_clients_edit/<int:id>', admin_client_edit),
+
+    # upcomming events :
 ]

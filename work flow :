@@ -1,0 +1,14 @@
+work flow : 
+1. check whether the client has given permission for the notifications .
+
+2.
+  - if the permission is given then send the latest token to backend
+  - if the permission is on default then ask for the notifications before submitting
+     - if the notifications is given then remove the modal dont directily submit the fking thing.
+     - if the notifications is not given then show a warning and show a simple guide to reenable notifications and also show a fking guide on the thank you page. 
+  - if the permission is enabled dont show anything 
+ - if the permission is denied then show a pop up on the thank you page.
+
+- on the admin side always show notifications. maybe you can show a simple icon in the top right corner and do it . 
+
+- also while logging in  always update the token and try the check for the token, also if anytime the token's are invalid then. just check the specific token. 

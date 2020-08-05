@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section">
+ <p class="is-size-3 has-text-centered">
+  <span class="has-text-weight-bold " style="margin-right: 7px;">Transactions of</span>
+  <span>{{sales.0.sale.date|date:"jS M Y"}}</span>
+ </p> <br>
+ <div class="columns is-centered">
+  <div class="column is-3">
+   <div class="notification  pink_notification has-text-centered">
+    <p class="is-size-3 has-text-weight-medium">₹ <span class="total_sales"></span></p>
+    <p class="is-size-6 ">Total Sales</p>
+   </div>
+  </div>
+ </div>
+ <br>
+ <table class="table is-fullwidth has-background-light" style="text-align: center; vertical-align: middle;">
+  <thead>
+   <tr>
+    <th>Client</th>
+    <th>Service</th>
+    <th class="is-hidden-mobile">Discout Given</th>
+    <th>Price <br> <span style="font-size:  small; font-weight: 100;">(after discount)</span></th>
+    <th></th>
+   </tr>
+  </thead>
+  <tbody>
+   {% for sale in sales %}
+   <tr>
+    <td><a href="/salon_clients_view/{{sale.sale.cli.id}}">{{sale.sale.cli.name}}</a></td>
+    <td>
+     {{ sale.sale.services}}
+    </td>
+    <td class="is-hidden-mobile">{{sale.sale.discount}}%</td>
+    <td>
+     ₹<span class="discount_price">{{sale.dis_price}}</span>
+    </td>
+    <td>
+     <a href="/sale_edit/{{sale.sale.id}}">
+      <span class="icon is-size-4 is-size-6-mobile check-icon-hover"><i class="fas fa-edit"> </i>
+      </span>
+     </a>
+    </td>
+   </tr>
+   {% endfor %}
+  </tbody>
+ </table>
+</div>
+<script>
+ document.addEventListener("DOMContentLoaded", () => {
+  let dis_price = [...document.querySelectorAll('.discount_price')];
+  let total_price = 0
+  dis_price.map(item => {
+   total_price = total_price + parseInt(item.innerHTML)
+  })
+  document.querySelector('.total_sales').innerText = total_price;
+ })
+</script>
+{% endblock %}

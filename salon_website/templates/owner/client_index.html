@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section">
+  <p class="is-size-2 has-text-weight-bold alegreya has-text-centered"><span class="title-border"> Client Data</span>
+  </p>
+</div>
+<div class="section" style="padding-top: 0px;">
+  <div class="tile is-ancestor is-mobile">
+    <div class="tile is-parent">
+      <div class="tile is-child notification pink_notification">
+        <p class="is-size-4 has-text-weight-bold">Total Clients</p>
+        <p class="is-size-5">{{total_cli}} <br> <span class=" is-size-6 less- opacity"> Total number of clients
+            registered in your
+            software.</span>
+        </p>
+      </div>
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child notification pink_notification">
+        <p class="is-size-4 has-text-weight-bold">Active Clients </p>
+        <p class="is-size-5">{{active_cli}} <br> <span class=" is-size-6 less-opacity"> Clients who visit your salon
+            atleast once
+            every
+            two weeks.
+          </span></p>
+      </div>
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child notification pink_notification">
+        <p class="is-size-4 has-text-weight-bold">Inactive Clients </p>
+        <p class="is-size-5">{{inactive_cli}} <br> <span class=" is-size-6 less-opacity">Clients who have stopped
+            visiting your salon
+            or have not visited in a long time. </span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="field">
+    <div class="control has-icons-left">
+      <input type="text" class="input" style="border: 2px solid rgb(68, 68, 68);" onkeyup="cli_name_serch(this)"
+        placeholder="Seach any client by name or number">
+      <span class="icon is-left"><i class="fas fa-search" style="color: rgb(68, 68, 68);"></i></span>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <table class="table is-fullwidth has-background-light" style="text-align: center;">
+    <thead>
+      <tr>
+        <th style="vertical-align: middle">Name</th>
+        <th style="vertical-align: middle">No of times visited</th>
+        <th style="vertical-align: middle">Number</th>
+        <th style="vertical-align: middle">Call</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cli in clients reversed %}
+      <tr class="hover_scale_cli to_search" onclick="window.location.href='salon_clients_view/{{cli.cli.id}}'">
+        <td style="vertical-align: middle">{{cli.cli.name}} {% if cli.type_cli %} <span
+            class="tag is-success">Active</span>
+          {% else %}<span class="tag is-danger">Inactive</span> {% endif %}</td>
+        <td style="vertical-align: middle">{{cli.visits}}</td>
+        <td style="vertical-align: middle">{{cli.cli.number}}</td>
+        <td style="vertical-align: middle"><a href="tel:{{cli.cli.number}}" class="button magenta_btn">Call</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  // txtValue.toUpperCase().indexOf(filter) > -1
+  function cli_name_serch(el) {
+    data = [...document.querySelectorAll('.to_search')]
+
+    for (let i = 0; i < data.length; i++) {
+
+      if (data[i].innerText.toUpperCase().indexOf(el.value.toUpperCase()) > -1) {
+        data[i].style.display = ''
+      } else {
+        data[i].style.display = 'none'
+      }
+
+    }
+  }
+</script>
+{% endblock %}
